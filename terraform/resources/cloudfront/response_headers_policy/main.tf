@@ -18,8 +18,8 @@ resource "aws_cloudfront_response_headers_policy" "this" {
         items = cors_config.value.access_control_allow_methods
       }
 
-      access_control_allow_origin {
-        items = cors_config.value.access_control_allow_origin
+      access_control_allow_origins {
+        items = cors_config.value.access_control_allow_origins
       }
 
       origin_override = cors_config.value.origin_override
