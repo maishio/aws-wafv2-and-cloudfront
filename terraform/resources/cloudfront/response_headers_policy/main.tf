@@ -29,7 +29,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
   dynamic "custom_headers_config" {
     for_each = var.custom_headers_config
     content {
-      items = {
+      items {
         header   = custom_headers_config.value.header
         override = custom_headers_config.value.override
         value    = custom_headers_config.value.value
@@ -40,10 +40,8 @@ resource "aws_cloudfront_response_headers_policy" "this" {
   dynamic "server_timing_headers_config" {
     for_each = var.server_timing_headers_config
     content {
-      items = {
-        enabled       = server_timing_headers_config.value.enabled
-        sampling_rate = server_timing_headers_config.value.sampling_rate
-      }
+      enabled       = server_timing_headers_config.value.enabled
+      sampling_rate = server_timing_headers_config.value.sampling_rate
     }
   }
 }
