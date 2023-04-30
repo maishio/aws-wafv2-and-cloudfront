@@ -6,14 +6,14 @@ terraform {
 }
 
 # Terragrunt include
-# @see https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#include
+# https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#include
 
 include {
   path = find_in_parent_folders()
 }
 
 # Terragrunt dependency
-# @see https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#dependency
+# https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#dependency
 
 dependency "vpc" {
   config_path = "../vpc"
