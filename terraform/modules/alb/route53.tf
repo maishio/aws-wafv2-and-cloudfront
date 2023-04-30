@@ -7,7 +7,7 @@ module "route53" {
       zone_id                = module.alb.elb.zone_id
     }
   ]
-  name    = "*.${data.aws_route53_zone.this.name}"
+  name    = "alb.${data.aws_route53_zone.this.name}"
   type    = "A"
   zone_id = data.aws_route53_zone.this.zone_id
 }
