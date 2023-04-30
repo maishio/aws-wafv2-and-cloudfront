@@ -26,3 +26,7 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/44653717/235330632-b77c4ab7-f4b3-4b09-9cbf-a91c347424f9.png" />
 </div>
+
+## References
+
+- [Amazon CloudFront を活用したウェブサイトの可用性向上](https://aws.amazon.com/jp/blogs/news/improve-your-website-availability-with-amazon-cloudfront/)
