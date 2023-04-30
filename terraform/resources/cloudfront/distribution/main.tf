@@ -92,6 +92,18 @@ resource "aws_cloudfront_distribution" "this" {
       origin_id           = origin.value.origin_id
       origin_path         = lookup(origin.value, "origin_path", null)
 
+      dynamic "custom_origin_config" {
+        for_each = lookup(origin.value, "custom_origin_config", [])
+        content {
+          http_port                = custom_origin_config.value.http_port
+          https_port               = custom_origin_config.value.https_port
+          origin_keepalive_timeout = lookup(custom_origin_config.value, "origin_keepalive_timeout", 60)
+          origin_protocol_policy   = custom_origin_config.value.origin_protocol_policy
+          origin_read_timeout      = lookup(custom_origin_config.value, "origin_read_timeout", 60)
+          origin_ssl_protocols     = custom_origin_config.value.origin_ssl_protocols
+        }
+      }
+
       dynamic "s3_origin_config" {
         for_each = lookup(origin.value, "s3_origin_config", [])
         content {
