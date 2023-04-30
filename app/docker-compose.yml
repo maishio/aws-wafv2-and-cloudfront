@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  api:
+    build:
+      target: development
+    container_name: api
+    ports:
+      - 8000:8000
+    volumes:
+      - ./fastapi_demo:/app/fastapi_demo
+    command: uvicorn fastapi_demo.main:app --reload --host 0.0.0.0
