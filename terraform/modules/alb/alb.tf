@@ -29,7 +29,27 @@ module "target_group" {
   vpc_id                = var.vpc_id
 }
 
-module "listener" {
+module "listener_http" {
+  source = "../../resources/elb/listener"
+  default_action = [
+    {
+      type = "redirect"
+      redirect = [
+        {
+          port        = "443"
+          protocol    = "HTTPS"
+          status_code = "HTTP_301"
+        }
+      ]
+    }
+  ]
+  load_balancer_arn = module.alb.elb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  tags              = var.tags
+}
+
+module "listener_https" {
   source          = "../../resources/elb/listener"
   certificate_arn = module.acm.acm_certificate.arn
   default_action = [
