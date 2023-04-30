@@ -11,3 +11,21 @@ terraform {
 include {
   path = find_in_parent_folders()
 }
+
+# Terragrunt dependency
+# https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/#dependency
+
+dependency "alb" {
+  config_path = "../alb"
+
+  mock_outputs = {
+    alb_id = "xxxxxxxxxxxxxxxxx"
+  }
+}
+
+# Terragrunt inputs
+# https://terragrunt.gruntwork.io/docs/features/inputs/#inputs
+
+inputs = {
+  alb_id = dependency.alb.outputs.alb_id
+}
