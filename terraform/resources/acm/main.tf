@@ -6,6 +6,9 @@ resource "aws_acm_certificate" "this" {
   subject_alternative_names = var.subject_alternative_names
   validation_method         = var.validation_method
   tags                      = merge(var.tags, { "Name" = var.domain_name })
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # AWS ACM Certificate Validation
