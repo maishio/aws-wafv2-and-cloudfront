@@ -44,6 +44,7 @@ module "listener_http" {
     }
   ]
   load_balancer_arn = module.alb.elb.arn
+  name              = "${var.tags.service}-${var.tags.env}-listener_http"
   port              = "80"
   protocol          = "HTTP"
   tags              = var.tags
@@ -59,6 +60,7 @@ module "listener_https" {
     }
   ]
   load_balancer_arn = module.alb.elb.arn
+  name              = "${var.tags.service}-${var.tags.env}-listener_https"
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-FS-1-2-Res-2020-10"
