@@ -3,8 +3,8 @@ module "route53" {
   alias = [
     {
       evaluate_target_health = false
-      name                   = module.cloudfront.cloudfront_distribution.domain_name
-      zone_id                = module.cloudfront.cloudfront_distribution.hosted_zone_id
+      name                   = module.distribution.cloudfront_distribution.domain_name
+      zone_id                = module.distribution.cloudfront_distribution.hosted_zone_id
     }
   ]
   name    = "cdn.${data.aws_route53_zone.this.name}"
