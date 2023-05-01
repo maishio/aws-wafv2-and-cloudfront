@@ -9,12 +9,17 @@ variable "certificate_arn" {
 
 variable "default_action" {
   description = "A list of default action objects for the dynamic block."
-  type        = any
+  type        = list(any)
   default     = []
 }
 
 variable "load_balancer_arn" {
   description = "ARN of the load balancer."
+  type        = string
+}
+
+variable "name" {
+  description = "The name of the listener."
   type        = string
 }
 
