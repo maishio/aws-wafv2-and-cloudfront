@@ -24,8 +24,8 @@ module "contents_versioning" {
 module "contents_object" {
   source       = "../../resources/s3/object"
   bucket       = module.contents.s3_bucket.id
-  content_type = "text/html"
-  key          = "static/index.html"
-  path         = "${path.module}/files/object/index.html"
+  content_type = "application/json"
+  key          = "static/test.json"
+  path         = "${path.module}/files/object/test.json"
   tags         = var.tags
 }
