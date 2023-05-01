@@ -107,7 +107,7 @@ module "private_route_table_1c" {
 
 module "flow_log" {
   source               = "../../resources/vpc/flow_log"
-  log_destination      = module.s3.s3_bucket.arn
+  log_destination      = module.flow_logs.s3_bucket.arn
   log_destination_type = "s3"
   name                 = "${var.tags.service}-${var.tags.env}-flow-log"
   traffic_type         = "ALL"
