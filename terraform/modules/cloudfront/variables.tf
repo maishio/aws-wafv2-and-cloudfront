@@ -3,6 +3,11 @@ variable "account" {
   type        = map(string)
 }
 
+variable "alb_id" {
+  description = "ID of the ALB."
+  type        = string
+}
+
 variable "hostzone" {
   description = "A map of Route53 Hosted Zone to create the DNS record in."
   type        = map(string)
