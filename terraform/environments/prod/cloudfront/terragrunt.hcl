@@ -19,7 +19,7 @@ dependency "alb" {
   config_path = "../alb"
 
   mock_outputs = {
-    alb_id = "xxxxxxxxxxxxxxxxx"
+    alb_id = "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/xxxxxxxxxxxxxx/xxxxxxxxxxxxxxxx"
   }
 }
 
