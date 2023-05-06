@@ -1,23 +1,11 @@
-module "origin_access_identity" {
-  source  = "../../resources/cloudfront/origin_access_identity"
-  comment = "for ${var.tags.service}-${var.tags.env}-cloudfront"
+module "origin_access_control" {
+  source                            = "../../resources/cloudfront/origin_access_control"
+  description                       = "for ${var.tags.service}-${var.tags.env}-cloudfront"
+  name                              = "${var.tags.service}-${var.tags.env}-origin-access-control"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
-
-module "response_headers_policy" {
-  source  = "../../resources/cloudfront/response_headers_policy"
-  comment = "Allow from limited origins"
-  cors_config = [
-    {
-      access_control_allow_credentials = false
-      access_control_allow_headers     = ["*"]
-      access_control_allow_methods     = ["GET", "HEAD"]
-      access_control_allow_origins     = ["https://alb.${data.aws_route53_zone.this.name}"]
-      origin_override                  = true
-    }
-  ]
-  name = "${var.tags.service}-${var.tags.env}-response-headers-policy"
-}
-
 
 module "distribution" {
   source = "../../resources/cloudfront/distribution"
@@ -71,8 +59,6 @@ module "distribution" {
 
   origin = [
     {
-      domain_name = "alb.${data.aws_route53_zone.this.name}"
-      origin_id   = var.alb_id
       custom_origin_config = [
         {
           http_port                = 80
@@ -82,19 +68,17 @@ module "distribution" {
           origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
         }
       ]
-      /* To address the error `cannot find a common base type for all elements.` */
-      s3_origin_config = []
+      domain_name = "alb.${data.aws_route53_zone.this.name}"
+      /* To address the error `all list elements must have the same type.` */
+      origin_access_control_id = null
+      origin_id                = var.alb_id
     },
     {
-      domain_name = module.contents.s3_bucket.bucket_regional_domain_name
-      origin_id   = module.contents.s3_bucket.id
       /* To address the error `cannot find a common base type for all elements.` */
-      custom_origin_config = []
-      s3_origin_config = [
-        {
-          origin_access_identity = module.origin_access_identity.cloudfront_origin_access_identity.cloudfront_access_identity_path
-        }
-      ]
+      custom_origin_config     = []
+      domain_name              = module.contents.s3_bucket.bucket_regional_domain_name
+      origin_access_control_id = module.origin_access_control.cloudfront_origin_access_control.id
+      origin_id                = module.contents.s3_bucket.id
     }
   ]
 
