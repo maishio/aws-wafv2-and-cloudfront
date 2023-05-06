@@ -4,13 +4,15 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "${CLOUDFRONT}"
+                "Service": "cloudfront.amazonaws.com"
             },
             "Action": "s3:GetObject",
-            "Resource": [
-                "arn:aws:s3:::${BUCKET}/*",
-                "arn:aws:s3:::${BUCKET}"
-            ]
+            "Resource": "${BUCKET_ARN}/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceArn": "${DISTRIBUTION_ARN}"
+                }
+            }
         }
     ]
 }

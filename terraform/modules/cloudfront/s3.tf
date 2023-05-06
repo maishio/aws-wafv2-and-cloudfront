@@ -10,8 +10,8 @@ module "contents_policy" {
   bucket = module.contents.s3_bucket.id
   path   = "${path.module}/files/template/cloudfront_s3_bucket_policy.json.tpl"
   vars = {
-    BUCKET     = module.contents.s3_bucket.id
-    CLOUDFRONT = module.origin_access_identity.cloudfront_origin_access_identity.iam_arn
+    BUCKET_ARN       = module.contents.s3_bucket.arn
+    DISTRIBUTION_ARN = module.distribution.cloudfront_distribution.arn
   }
 }
 
