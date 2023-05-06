@@ -86,11 +86,12 @@ resource "aws_cloudfront_distribution" "this" {
   dynamic "origin" {
     for_each = var.origin
     content {
-      connection_attempts = lookup(origin.value, "connection_attempts", 3)
-      connection_timeout  = lookup(origin.value, "connection_timeout", 10)
-      domain_name         = origin.value.domain_name
-      origin_id           = origin.value.origin_id
-      origin_path         = lookup(origin.value, "origin_path", null)
+      connection_attempts      = lookup(origin.value, "connection_attempts", 3)
+      connection_timeout       = lookup(origin.value, "connection_timeout", 10)
+      domain_name              = origin.value.domain_name
+      origin_id                = origin.value.origin_id
+      origin_access_control_id = lookup(origin.value, "origin_access_control_id", null)
+      origin_path              = lookup(origin.value, "origin_path", null)
 
       dynamic "custom_origin_config" {
         for_each = lookup(origin.value, "custom_origin_config", [])
