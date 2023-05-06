@@ -40,17 +40,9 @@ module "distribution" {
 
   allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
   cached_methods  = ["GET", "HEAD", "OPTIONS"]
-  default_ttl     = 10
-  forwarded_values = [
-    {
-      forward      = "all"
-      headers      = ["*"]
-      query_string = true
-    }
-  ]
+  /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior */
+  cache_policy_id        = data.aws_cloudfront_cache_policy.this.id
   target_origin_id       = var.alb_id
-  max_ttl                = 60
-  min_ttl                = 0
   viewer_protocol_policy = "redirect-to-https"
 
   /* Ordered Cache Behaviors */

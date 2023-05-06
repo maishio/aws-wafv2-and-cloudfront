@@ -21,7 +21,7 @@ aws cloudfront list-cache-policies --query 'CachePolicyList.Items[].CachePolicy.
 # https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html
 
 data "aws_cloudfront_cache_policy" "this" {
-  name = "Managed-Elemental-MediaPackage"
+  name = "Managed-CachingOptimized"
 }
 
 /* List of available managed origin request policy names.
