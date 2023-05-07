@@ -19,7 +19,8 @@ dependency "alb" {
   config_path = "../alb"
 
   mock_outputs = {
-    alb_id = "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/xxxxxxxxxxxxxx/xxxxxxxxxxxxxxxx"
+    alb_id       = "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/xxxxxxxxxxxxxx/xxxxxxxxxxxxxxxx"
+    alb_dns_name = "xxxxxxxxxxxxxxxxxxxxxxxxxx.us-east-1.elb.amazonaws.com"
   }
 }
 
@@ -27,5 +28,6 @@ dependency "alb" {
 # https://terragrunt.gruntwork.io/docs/features/inputs/#inputs
 
 inputs = {
-  alb_id = dependency.alb.outputs.alb_id
+  alb_id       = dependency.alb.outputs.alb_id
+  alb_dns_name = dependency.alb.outputs.alb_dns_name
 }
