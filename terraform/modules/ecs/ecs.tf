@@ -6,10 +6,10 @@ module "ecs_cluster" {
 
 module "ecs_task_definition" {
   source             = "../../resources/ecs/task_definition"
-  cpu                = "1024"
+  cpu                = "256"
   execution_role_arn = module.iam_role.iam_role.arn
   family             = "api"
-  memory             = "2048"
+  memory             = "512"
   path               = "${path.module}/files/template/task_definition.json.tpl"
   vars = {
     ENV            = var.tags.env
