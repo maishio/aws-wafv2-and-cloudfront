@@ -26,6 +26,20 @@ module "distribution" {
   include_cookies = false
   prefix          = "cloudfront/"
 
+  /* Custom Error Responses */
+
+  custom_error_response = [
+    {
+      error_code         = 403
+      response_code      = 200
+      response_page_path = "/error403.html"
+    },
+    {
+      error_code         = 404
+      response_code      = 200
+      response_page_path = "/error404.html"
+    }
+  ]
   /* Default Cache Behavior */
 
   allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
