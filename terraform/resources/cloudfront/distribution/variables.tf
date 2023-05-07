@@ -92,6 +92,14 @@ variable "prefix" {
   default     = null
 }
 
+/* Custom Error Response Arguments */
+
+variable "custom_error_response" {
+  description = "Dynamic block for custom error response."
+  type        = list(any)
+  default     = []
+}
+
 /* Default Cache Behavior Arguments */
 
 variable "allowed_methods" {

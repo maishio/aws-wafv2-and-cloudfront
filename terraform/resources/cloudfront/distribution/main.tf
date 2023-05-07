@@ -20,6 +20,16 @@ resource "aws_cloudfront_distribution" "this" {
     prefix          = var.prefix
   }
 
+  dynamic "custom_error_response" {
+    for_each = var.custom_error_response
+    content {
+      error_caching_min_ttl = lookup(custom_error_response.value, "error_caching_min_ttl", 0)
+      error_code            = custom_error_response.value.error_code
+      response_code         = custom_error_response.value.response_code
+      response_page_path    = custom_error_response.value.response_page_path
+    }
+  }
+
   default_cache_behavior {
     allowed_methods            = var.allowed_methods
     cached_methods             = var.cached_methods
