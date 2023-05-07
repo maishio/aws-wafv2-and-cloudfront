@@ -18,7 +18,7 @@ module "target_group" {
   source                = "../../resources/elb/target_group"
   health_check_interval = 60
   health_check_matcher  = "200"
-  health_check_path     = "/"
+  health_check_path     = "/health"
   health_check_port     = 8000
   health_check_timeout  = 10
   name                  = "${var.tags.service}-${var.tags.env}-target-group"
