@@ -22,10 +22,29 @@ module "contents_versioning" {
 }
 
 module "contents_object" {
-  source       = "../../resources/s3/object"
-  bucket       = module.contents.s3_bucket.id
-  content_type = "application/json"
-  key          = "static/test.json"
-  path         = "${path.module}/files/object/test.json"
-  tags         = var.tags
+  source = "../../resources/s3/object"
+  bucket = module.contents.s3_bucket.id
+  objects = {
+    0 = {
+      content_type = "application/json"
+      key          = "test.json"
+      source       = "${path.module}/files/object/test.json"
+    },
+    1 = {
+      content_type = "text/html"
+      key          = "index.html"
+      source       = "${path.module}/files/object/index.html"
+    },
+    2 = {
+      content_type = "text/html"
+      key          = "error403.html"
+      source       = "${path.module}/files/object/error403.html"
+    },
+    3 = {
+      content_type = "text/html"
+      key          = "error404.html"
+      source       = "${path.module}/files/object/error404.html"
+    }
+  }
+  tags = var.tags
 }
