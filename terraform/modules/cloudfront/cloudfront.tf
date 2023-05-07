@@ -12,11 +12,12 @@ module "distribution" {
   aliases = [
     "cdn.${data.aws_route53_zone.this.name}"
   ]
-  comment    = "Example Distribution"
-  enabled    = true
-  name       = "${var.tags.service}-${var.tags.env}-cloudfront"
-  tags       = var.tags
-  web_acl_id = module.wafv2.wafv2_web_acl.arn
+  comment     = "Example Distribution"
+  enabled     = true
+  price_class = "PriceClass_200"
+  name        = "${var.tags.service}-${var.tags.env}-cloudfront"
+  tags        = var.tags
+  web_acl_id  = module.wafv2.wafv2_web_acl.arn
 
   /* Logging */
 
@@ -56,11 +57,11 @@ module "distribution" {
           http_port                = 80
           https_port               = 443
           origin_keepalive_timeout = 5
-          origin_protocol_policy   = "https-only"
+          origin_protocol_policy   = "http-only"
           origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
         }
       ]
-      domain_name = "alb.${data.aws_route53_zone.this.name}"
+      domain_name = var.alb_dns_name
       /* To address the error `all list elements must have the same type.` */
       origin_access_control_id = null
       origin_id                = var.alb_id

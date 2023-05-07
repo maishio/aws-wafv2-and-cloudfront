@@ -29,30 +29,8 @@ module "target_group" {
   vpc_id                = var.vpc_id
 }
 
-module "listener_http" {
+module "listener" {
   source = "../../resources/elb/listener"
-  default_action = [
-    {
-      type = "redirect"
-      redirect = [
-        {
-          port        = "443"
-          protocol    = "HTTPS"
-          status_code = "HTTP_301"
-        }
-      ]
-    }
-  ]
-  load_balancer_arn = module.alb.elb.arn
-  name              = "${var.tags.service}-${var.tags.env}-listener_http"
-  port              = "80"
-  protocol          = "HTTP"
-  tags              = var.tags
-}
-
-module "listener_https" {
-  source          = "../../resources/elb/listener"
-  certificate_arn = module.acm.acm_certificate.arn
   default_action = [
     {
       target_group_arn = module.target_group.elb_target_group.arn
@@ -60,9 +38,8 @@ module "listener_https" {
     }
   ]
   load_balancer_arn = module.alb.elb.arn
-  name              = "${var.tags.service}-${var.tags.env}-listener_https"
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-FS-1-2-Res-2020-10"
+  name              = "${var.tags.service}-${var.tags.env}-listener"
+  port              = "80"
+  protocol          = "HTTP"
   tags              = var.tags
 }

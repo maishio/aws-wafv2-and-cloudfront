@@ -6,11 +6,11 @@ module "alb_sg" {
   ingress_rule = {
     0 = {
       description = "Allow CloudFront"
-      from_port   = 443
+      from_port   = 80
       /* Prefix list to allow access via CloudFront */
       prefix_list_ids = [data.aws_ec2_managed_prefix_list.this.id]
       protocol        = "tcp"
-      to_port         = 443
+      to_port         = 80
     }
   }
 }
