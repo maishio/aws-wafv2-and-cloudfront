@@ -27,31 +27,23 @@ module "distribution" {
   /* Default Cache Behavior */
 
   allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-  cached_methods  = ["GET", "HEAD", "OPTIONS"]
-  /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior */
-  cache_policy_id        = data.aws_cloudfront_cache_policy.this.id
-  target_origin_id       = var.alb_id
-  viewer_protocol_policy = "redirect-to-https"
+  cached_methods  = ["GET", "HEAD"]
+  /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior. */
+  cache_policy_id        = data.aws_cloudfront_cache_policy.s3.id
+  target_origin_id       = module.contents.s3_bucket.id
+  viewer_protocol_policy = "allow-all"
 
   /* Ordered Cache Behaviors */
 
   ordered_cache_behavior = [
     {
-      allowed_methods = ["GET", "HEAD", "OPTIONS"]
+      allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
       cached_methods  = ["GET", "HEAD", "OPTIONS"]
-      default_ttl     = 300
-      forwarded_values = [
-        {
-          forward      = "none"
-          headers      = ["Origin"]
-          query_string = false
-        }
-      ]
-      target_origin_id       = module.contents.s3_bucket.id
-      max_ttl                = 600
-      min_ttl                = 0
+      /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior */
+      cache_policy_id        = data.aws_cloudfront_cache_policy.alb.id
+      target_origin_id       = var.alb_id
       viewer_protocol_policy = "redirect-to-https"
-      path_pattern           = "/static/*"
+      path_pattern           = "/api/*"
     }
   ]
 
