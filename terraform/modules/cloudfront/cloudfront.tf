@@ -12,12 +12,13 @@ module "distribution" {
   aliases = [
     "cdn.${data.aws_route53_zone.this.name}"
   ]
-  comment     = "Example Distribution"
-  enabled     = true
-  price_class = "PriceClass_200"
-  name        = "${var.tags.service}-${var.tags.env}-cloudfront"
-  tags        = var.tags
-  web_acl_id  = module.wafv2.wafv2_web_acl.arn
+  comment             = "Example Distribution"
+  default_root_object = "index.html"
+  enabled             = true
+  price_class         = "PriceClass_200"
+  name                = "${var.tags.service}-${var.tags.env}-cloudfront"
+  tags                = var.tags
+  web_acl_id          = module.wafv2.wafv2_web_acl.arn
 
   /* Logging */
 
@@ -31,6 +32,9 @@ module "distribution" {
   cached_methods  = ["GET", "HEAD"]
   /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior. */
   cache_policy_id        = data.aws_cloudfront_cache_policy.s3.id
+  default_ttl            = 86400
+  max_ttl                = 31536000
+  min_ttl                = 0
   target_origin_id       = module.contents.s3_bucket.id
   viewer_protocol_policy = "allow-all"
 
@@ -42,6 +46,9 @@ module "distribution" {
       cached_methods  = ["GET", "HEAD", "OPTIONS"]
       /* ForwardedValues cannot be used when a cache policy is associated to the cache behavior */
       cache_policy_id        = data.aws_cloudfront_cache_policy.alb.id
+      default_ttl            = 86400
+      max_ttl                = 31536000
+      min_ttl                = 0
       target_origin_id       = var.alb_id
       viewer_protocol_policy = "redirect-to-https"
       path_pattern           = "/api/*"
