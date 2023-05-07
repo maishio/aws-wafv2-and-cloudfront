@@ -70,14 +70,17 @@ resource "aws_cloudfront_distribution" "this" {
       trusted_signers            = lookup(ordered_cache_behavior.value, "trusted_signers", [])
       viewer_protocol_policy     = lookup(ordered_cache_behavior.value, "viewer_protocol_policy", "llow-all")
 
-      forwarded_values {
-        headers                 = lookup(ordered_cache_behavior, "headers", [])
-        query_string            = lookup(ordered_cache_behavior, "query_string", false)
-        query_string_cache_keys = lookup(ordered_cache_behavior, "query_string_cache_keys", [])
+      dynamic "forwarded_values" {
+        for_each = lookup(ordered_cache_behavior.value, "forwarded_values", [])
+        content {
+          headers                 = lookup(forwarded_values, "headers", [])
+          query_string            = lookup(forwarded_values, "query_string", false)
+          query_string_cache_keys = lookup(forwarded_values, "query_string_cache_keys", [])
 
-        cookies {
-          forward           = lookup(ordered_cache_behavior, "forward", "none")
-          whitelisted_names = lookup(ordered_cache_behavior, "whitelisted_names", [])
+          cookies {
+            forward           = lookup(forwarded_values, "forward", "none")
+            whitelisted_names = lookup(forwarded_values, "whitelisted_names", [])
+          }
         }
       }
     }
