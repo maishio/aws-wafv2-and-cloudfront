@@ -5,11 +5,11 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/")
-async def root() -> dict:
+@app.get("/api/hello")
+async def hello() -> dict:
     return {"message": "Hello World"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/health")
+async def health() -> dict:
+    return {"health": "OK"}
