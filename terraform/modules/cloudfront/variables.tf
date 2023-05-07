@@ -8,6 +8,11 @@ variable "alb_id" {
   type        = string
 }
 
+variable "alb_dns_name" {
+  description = "DNS name of the ALB."
+  type        = string
+}
+
 variable "hostzone" {
   description = "A map of Route53 Hosted Zone to create the DNS record in."
   type        = map(string)
