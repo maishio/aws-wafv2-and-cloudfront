@@ -24,13 +24,11 @@ No modules.
 
 ## Inputs
 
-| Name                                                                  | Description                                                                        | Type          | Default                      | Required |
-| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------- | ---------------------------- | :------: |
-| <a name="input_bucket"></a> [bucket](#input_bucket)                   | Name of the bucket.                                                                | `string`      | n/a                          |   yes    |
-| <a name="input_content_type"></a> [content_type](#input_content_type) | Standard MIME type describing the format of the object data.                       | `string`      | `"application/octet-stream"` |    no    |
-| <a name="input_key"></a> [key](#input_key)                            | Name of the object once it is in the bucket.                                       | `string`      | n/a                          |   yes    |
-| <a name="input_path"></a> [path](#input_path)                         | Path to a file that will be read and uploaded as raw bytes for the object content. | `string`      | `null`                       |    no    |
-| <a name="input_tags"></a> [tags](#input_tags)                         | A mapping of tags to assign to the resource.                                       | `map(string)` | `{}`                         |    no    |
+| Name                                                   | Description                                  | Type          | Default | Required |
+| ------------------------------------------------------ | -------------------------------------------- | ------------- | ------- | :------: |
+| <a name="input_bucket"></a> [bucket](#input_bucket)    | Name of the bucket.                          | `string`      | n/a     |   yes    |
+| <a name="input_objects"></a> [objects](#input_objects) | A map of objects to create in the bucket.    | `any`         | `{}`    |    no    |
+| <a name="input_tags"></a> [tags](#input_tags)          | A mapping of tags to assign to the resource. | `map(string)` | `{}`    |    no    |
 
 ## Outputs
 

@@ -6,21 +6,10 @@ variable "bucket" {
   type        = string
 }
 
-variable "content_type" {
-  description = "Standard MIME type describing the format of the object data."
-  type        = string
-  default     = "application/octet-stream"
-}
-
-variable "key" {
-  description = "Name of the object once it is in the bucket."
-  type        = string
-}
-
-variable "path" {
-  description = "Path to a file that will be read and uploaded as raw bytes for the object content."
-  type        = string
-  default     = null
+variable "objects" {
+  description = "A map of objects to create in the bucket."
+  type        = any
+  default     = {}
 }
 
 variable "tags" {
