@@ -32,7 +32,7 @@ module "alb_logs_policy" {
   bucket = module.alb_logs.s3_bucket.id
   path   = "${path.module}/files/template/alb_s3_bucket_policy.json.tpl"
   vars = {
-    ACCOUNT = data.aws_elb_service_account.this.arn
-    BUCKET  = module.alb_logs.s3_bucket.id
+    ACCOUNT    = data.aws_elb_service_account.this.arn
+    BUCKET_ARN = module.alb_logs.s3_bucket.arn
   }
 }
