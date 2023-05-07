@@ -20,26 +20,13 @@ aws cloudfront list-cache-policies --query 'CachePolicyList.Items[].CachePolicy.
 # Managed Cache Policies
 # https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html
 
-data "aws_cloudfront_cache_policy" "this" {
-  name = "Managed-CachingOptimized"
+data "aws_cloudfront_cache_policy" "s3" {
+  name = "Managed-Elemental-MediaPackage"
 }
 
-/* List of available managed origin request policy names.
-aws cloudfront list-origin-request-policies --query 'OriginRequestPolicyList.Items[].OriginRequestPolicy.OriginRequestPolicyConfig.Name'
-[
-    "Managed-UserAgentRefererHeaders",
-    "Managed-AllViewer",
-    "Managed-CORS-S3Origin",
-    "Managed-CORS-CustomOrigin",
-    "Managed-Elemental-MediaTailor-PersonalizedManifests",
-    "Managed-AllViewerAndCloudFrontHeaders-2022-06",
-    "Managed-AllViewerExceptHostHeader"
-]
-*/
+# Managed Cache Policies
+# https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html
 
-# Managed Origin Request Policies
-# https://docs.aws.amazon.com/ja_jp/AmazonCloudFront/latest/DeveloperGuide/using-managed-origin-request-policies.html
-
-data "aws_cloudfront_origin_request_policy" "asset" {
-  name = "Managed-CORS-S3Origin"
+data "aws_cloudfront_cache_policy" "alb" {
+  name = "Managed-CachingOptimized"
 }
