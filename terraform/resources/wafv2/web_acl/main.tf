@@ -17,15 +17,38 @@ resource "aws_wafv2_web_acl" "this" {
       name     = rule.value.name
       priority = rule.value.priority
 
-      override_action {
-        dynamic "none" {
-          for_each = lookup(rule.value, "override_action", {}) == "none" ? [1] : []
-          content {}
-        }
+      dynamic "override_action" {
+        for_each = lookup(rule.value, "override_action", [])
+        content {
+          dynamic "none" {
+            for_each = override_action.value.type == "none" ? [1] : []
+            content {}
+          }
 
-        dynamic "count" {
-          for_each = lookup(rule.value, "override_action", {}) == "count" ? [1] : []
-          content {}
+          dynamic "count" {
+            for_each = override_action.value.type == "count" ? [1] : []
+            content {}
+          }
+        }
+      }
+
+      dynamic "action" {
+        for_each = lookup(rule.value, "action", [])
+        content {
+          dynamic "allow" {
+            for_each = action.value.type == "allow" ? [1] : []
+            content {}
+          }
+
+          dynamic "block" {
+            for_each = action.value.type == "block" ? [1] : []
+            content {}
+          }
+
+          dynamic "count" {
+            for_each = action.value.type == "count" ? [1] : []
+            content {}
+          }
         }
       }
 
@@ -35,6 +58,30 @@ resource "aws_wafv2_web_acl" "this" {
           content {
             name        = managed_rule_group_statement.value.name
             vendor_name = managed_rule_group_statement.value.vendor_name
+          }
+        }
+
+        dynamic "rate_based_statement" {
+          for_each = rule.value.rate_based_statement
+          content {
+            aggregate_key_type = lookup(rate_based_statement.value, "aggregate_key_type", "IP")
+            limit              = rate_based_statement.value.limit
+
+            scope_down_statement {
+              dynamic "geo_match_statement" {
+                for_each = lookup(rate_based_statement.value, "geo_match_statement", [])
+                content {
+                  country_codes = geo_match_statement.value.country_codes
+                }
+              }
+
+              dynamic "ip_set_reference_statement" {
+                for_each = lookup(rate_based_statement.value, "ip_set_reference_statement", [])
+                content {
+                  arn = ip_set_reference_statement.value.arn
+                }
+              }
+            }
           }
         }
       }
