@@ -9,15 +9,21 @@ module "wafv2" {
 
   rule = [
     {
-      name            = "AWSManagedRulesCommonRuleSet"
-      override_action = "none"
-      priority        = 10
+      name     = "AWSManagedRulesCommonRuleSet"
+      priority = 10
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesCommonRuleSet"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -27,15 +33,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesKnownBadInputsRuleSet"
-      override_action = "none"
-      priority        = 20
+      name     = "AWSManagedRulesKnownBadInputsRuleSet"
+      priority = 20
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesKnownBadInputsRuleSet"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -45,15 +57,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesAmazonIpReputationList"
-      override_action = "none"
-      priority        = 30
+      name     = "AWSManagedRulesAmazonIpReputationList"
+      priority = 30
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesAmazonIpReputationList"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -63,15 +81,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesAnonymousIpList"
-      override_action = "none"
-      priority        = 40
+      name     = "AWSManagedRulesAnonymousIpList"
+      priority = 40
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesAnonymousIpList"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -81,15 +105,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesSQLiRuleSet"
-      override_action = "none"
-      priority        = 50
+      name     = "AWSManagedRulesSQLiRuleSet"
+      priority = 50
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesSQLiRuleSet"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -99,15 +129,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesLinuxRuleSet"
-      override_action = "none"
-      priority        = 60
+      name     = "AWSManagedRulesLinuxRuleSet"
+      priority = 60
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesLinuxRuleSet"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -117,15 +153,21 @@ module "wafv2" {
       ]
     },
     {
-      name            = "AWSManagedRulesUnixRuleSet"
-      override_action = "none"
-      priority        = 70
+      name     = "AWSManagedRulesUnixRuleSet"
+      priority = 70
+      action   = []
+      override_action = [
+        {
+          type = "none"
+        }
+      ]
       managed_rule_group_statement = [
         {
           name        = "AWSManagedRulesUnixRuleSet"
           vendor_name = "AWS"
         }
       ]
+      rate_based_statement = []
       visibility_config = [
         {
           cloudwatch_metrics_enabled = true
@@ -134,6 +176,35 @@ module "wafv2" {
         }
       ]
     },
+    {
+      name     = "AWSRateBasedRule"
+      priority = 1
+      action = [
+        {
+          type = "block"
+        }
+      ]
+      override_action              = []
+      managed_rule_group_statement = []
+      rate_based_statement = [
+        {
+          aggregate_key_type = "IP"
+          limit              = 500
+          geo_match_statement = [
+            {
+              country_codes = ["US", "NL"]
+            }
+          ]
+        }
+      ]
+      visibility_config = [
+        {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "AWSRateBasedRuleMetric"
+          sampled_requests_enabled   = false
+        }
+      ]
+    }
   ]
 
   /* Visibility Configuration Block */
