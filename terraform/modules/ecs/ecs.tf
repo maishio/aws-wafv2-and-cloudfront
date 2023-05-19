@@ -1,7 +1,15 @@
 module "ecs_cluster" {
-  source = "../../resources/ecs/cluster"
-  name   = "${var.tags.service}-${var.tags.env}-api-cluster"
-  tags   = var.tags
+  source             = "../../resources/ecs/cluster"
+  capacity_providers = ["FARGATE"]
+  default_capacity_provider_strategy = [
+    {
+      base              = 1
+      capacity_provider = "FARGATE"
+      weight            = 100
+    }
+  ]
+  name = "${var.tags.service}-${var.tags.env}-api-cluster"
+  tags = var.tags
 }
 
 module "ecs_task_definition" {
@@ -11,28 +19,28 @@ module "ecs_task_definition" {
   family             = "api"
   memory             = "512"
   path               = "${path.module}/files/template/task_definition.json.tpl"
+  tags               = var.tags
   vars = {
     ENV            = var.tags.env
     REGION         = var.region.id
     REPOSITORY_URL = module.ecr.ecr_repository.repository_url
     SERVICE        = var.tags.service
   }
-  tags = var.tags
 }
 
 module "ecs_service" {
   source = "../../resources/ecs/service"
   capacity_provider_strategy = [
     {
-      base              = 0
-      capacity_provider = "FARGATE_SPOT"
-      weight            = 0
-    },
-    {
-      base              = 1
+      base              = var.tags.env == "prod" ? 1 : 0
       capacity_provider = "FARGATE"
       weight            = 1
-    }
+    },
+    {
+      base              = var.tags.env == "prod" ? 0 : 1
+      capacity_provider = "FARGATE_SPOT"
+      weight            = 1
+    },
   ]
   cluster       = module.ecs_cluster.ecs_cluster.id
   desired_count = 0
